@@ -4,5 +4,6 @@
 format: jb-book
 root: intro
 chapters:
+- file: python_notebooks/01_bar.ipynb
 - file: python_notebooks/02_density.ipynb
 - file: python_notebooks/03_scatter.ipynb

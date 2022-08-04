@@ -3,7 +3,7 @@
 
 title: Python Visual Library
 author: Alexander Quispe
-logo: figs/main_logo.png
+logo: figs/py_vis.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html

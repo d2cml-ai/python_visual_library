@@ -6,3 +6,4 @@ scipy
 seaborn
 pandas
 wbgapi
+ghp-import

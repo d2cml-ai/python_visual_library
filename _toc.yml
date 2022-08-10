@@ -9,5 +9,6 @@ chapters:
 - file: python_notebooks/01_bar.ipynb
 - file: python_notebooks/02_density.ipynb
 - file: python_notebooks/03_scatter.ipynb
+- file: python_notebooks/04_reg_coef.ipynb
 - file: python_notebooks/07_random_inference.ipynb
 - file: python_notebooks/08_reg_rdd.ipynb

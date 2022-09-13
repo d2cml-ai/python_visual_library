@@ -4,6 +4,7 @@
 title: Python Visual Library
 author: Alexander Quispe
 logo: figs/py_vis.png
+copyright: "2022"  
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
@@ -25,7 +26,7 @@ repository:
   url: https://github.com/d2cml-ai/python_visual_library
   # Online location of your book
   path_to_book: _build/jupyter_execute  # Optional path to your book, relative to the repository root
-  branch: main  # Which branch of the repository should be used when creating links (optional)
+  branch: master  # Which branch of the repository should be used when creating links (optional) [Master]
 
 # Add GitHub buttons to your book
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
@@ -33,6 +34,10 @@ html:
   use_issues_button: true
   use_repository_button: true
   use_edit_page_button: true
+  extra_footer: |
+    <p>
+    MIT Licence
+    </p>
 
 launch_buttons:
   binder             : false
@@ -45,5 +50,6 @@ launch_buttons:
   colab_url          : https://colab.research.google.com
 
 
-
-
+sphinx:
+  config:
+    html_show_copyright: false # copyright show false

@@ -38,7 +38,7 @@ jobs:
       # Build book
       - id: Build_book
         name: Build 
-        run: jb clean -a . ; jb build .
+        run: jb build .
         shell: bash
 
       # Update book in gh-pages branch
@@ -49,20 +49,20 @@ jobs:
         shell: bash
 
       # Push in main 
-      # - id: commit
-      #   name: Commit files
-      #   run:
-      #     git config --local user.name action-user
+      - id: commit
+        name: Commit files
+        run:
+          git config --local user.name action-user
 
-      #     git config --local user.email "actions@github.com"
+          git config --local user.email "actions@github.com"
 
-      #     git add -A
+          git add -A
           
-      #     git commit -m "update files"
+          git commit -m "update files"
 
-      #     git push origin main
+          git push origin main
 
-      #   env:
-      #     REPO_KEY: ${{secrets.GITHUB_TOKEN}}
+        env:
+          REPO_KEY: ${{secrets.GITHUB_TOKEN}}
 
-      #     username: github-actions
+          username: github-actions

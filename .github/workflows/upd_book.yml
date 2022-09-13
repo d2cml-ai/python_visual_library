@@ -38,7 +38,7 @@ jobs:
       # Build book
       - id: Build_book
         name: Build 
-        run: jb build .
+        run: jb clean -a . ; jb build .
         shell: bash
 
       # Update book in gh-pages branch

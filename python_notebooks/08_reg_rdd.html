@@ -1,0 +1,1377 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>8. Regression discontinuity &#8212; Python Visual Library</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'python_notebooks/08_reg_rdd';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="7. Randomization Inference" href="07_random_inference.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/py_vis.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/py_vis.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Python Visual Library 1
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_bar.html">1. Bar Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_density.html">2. Density</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_scatter.html">3. Scatter Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="04_reg_coef.html">4. Regression Coefficientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_difference_in_differences.html">5. Difference in differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_even_study.html">6. Even study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_random_inference.html">7. Randomization Inference</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">8. Regression discontinuity</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/d2cml-ai/python_visual_library/blob/master/python_notebooks/08_reg_rdd.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/d2cml-ai/python_visual_library" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/d2cml-ai/python_visual_library/edit/master/python_notebooks/08_reg_rdd.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/d2cml-ai/python_visual_library/issues/new?title=Issue%20on%20page%20%2Fpython_notebooks/08_reg_rdd.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/python_notebooks/08_reg_rdd.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regression discontinuity</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figurewith-2d-bins">8.1. Figurewith 2D bins</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-with-differet-bandwidths">8.2. Results with differet bandwidths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-confidence-intervals">8.3. Figure with Confidence Intervals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-confidence-intervals-and-points">8.4. Figure with Confidence Intervals and Points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-point-estimate">8.5. Figure with Point estimate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-confidence-intervals-and-histograms">8.6. Figure with Confidence Intervals and Histograms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-linear-fits-and-local-linear-fits">8.7. Figure with Linear Fits and Local Linear Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-points">8.8. Figure with Points</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regression-discontinuity">
+<h1><span class="section-number">8. </span>Regression discontinuity<a class="headerlink" href="#regression-discontinuity" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span><span class="o">,</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">patsy</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span><span class="o">,</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span> <span class="k">as</span> <span class="n">lr</span> <span class="c1">## Linear regression</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">dpi_f</span> <span class="o">=</span> <span class="mi">600</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">patsy</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span><span class="o">,</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span> <span class="k">as</span> <span class="n">lr</span> <span class="c1">## Linear regression</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">dpi_f</span> <span class="o">=</span> <span class="mi">600</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;sklearn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="figurewith-2d-bins">
+<h2><span class="section-number">8.1. </span>Figurewith 2D bins<a class="headerlink" href="#figurewith-2d-bins" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/main/data/evaluation.dta&quot;</span><span class="p">)</span>
+
+<span class="n">cutoff</span> <span class="o">=</span> <span class="mi">58</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment_locality</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">poverty_index</span> <span class="o">&lt;=</span> <span class="n">cutoff</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;health_expenditures&quot;</span><span class="p">,</span> <span class="s2">&quot;treatment&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>poverty_index</th>
+      <th>health_expenditures</th>
+      <th>treatment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>55.950542</td>
+      <td>15.185455</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>55.950542</td>
+      <td>19.580902</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>46.058731</td>
+      <td>13.076257</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>46.058731</td>
+      <td>2.398854</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>54.095825</td>
+      <td>0.000000</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">data_treat</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data_crtl</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;health_expenditures ~ bs(poverty_index, df = 3)&quot;</span>
+
+<span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+<span class="n">y1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+
+<span class="n">data_treat</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">lr</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">data_crtl</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">lr</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">bins_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#2c6609&quot;</span><span class="p">,</span> <span class="s2">&quot;#b7190b&quot;</span><span class="p">]</span>
+
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;porverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;healt_expenditures&quot;</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">hist2d</span><span class="p">(</span>
+    <span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;health_expenditures&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;Blues&quot;</span>
+    <span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="p">(</span><span class="n">bins_xy</span><span class="p">,</span> <span class="n">bins_xy</span><span class="p">)</span>
+    <span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.75</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;yhat&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Eligible&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;yhat&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Not eligible&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">shrink</span> <span class="o">=</span> <span class="mf">.4</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Count&quot;</span><span class="p">,</span> <span class="n">ticks</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Eligibility&quot;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">.8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;-.&quot;</span><span class="p">,</span> <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Health Expenditures ($)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Baseline Poverty Index&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6cf1b087ab2ac25e9d161dde05d5ff1762959abe96c84a9c4432748f7c6bd9a3.png" src="../_images/6cf1b087ab2ac25e9d161dde05d5ff1762959abe96c84a9c4432748f7c6bd9a3.png" />
+</div>
+</div>
+</section>
+<section id="results-with-differet-bandwidths">
+<h2><span class="section-number">8.2. </span>Results with differet bandwidths<a class="headerlink" href="#results-with-differet-bandwidths" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rdrobust</span> <span class="kn">import</span> <span class="n">rdrobust</span><span class="p">,</span> <span class="n">rdplot</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/main/data/RDD_data.dta&quot;</span><span class="p">)</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;tmt_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">tmt_status</span> <span class="o">==</span> <span class="s2">&quot;Control&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">bw</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">.5</span><span class="p">,</span> <span class="mf">6.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coef</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">s_e</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bw</span><span class="p">:</span>
+    <span class="n">rdd_est</span> <span class="o">=</span> <span class="n">rdrobust</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">tmt_status</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span>  <span class="n">kernel</span> <span class="o">=</span> <span class="s2">&quot;tri&quot;</span><span class="p">)</span>
+    <span class="n">coef_0</span> <span class="o">=</span> <span class="n">rdd_est</span><span class="o">.</span><span class="n">coef</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">stde</span> <span class="o">=</span> <span class="n">rdd_est</span><span class="o">.</span><span class="n">se</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coef_0</span><span class="p">)</span>
+    <span class="n">s_e</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stde</span><span class="p">)</span>
+
+<span class="n">u</span> <span class="o">=</span> <span class="n">coef</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s_e</span><span class="p">)</span>
+<span class="n">l</span> <span class="o">=</span> <span class="n">coef</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s_e</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span><span class="s1">&#39;coef&#39;</span><span class="p">:</span> <span class="n">coef</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">:</span> <span class="n">l</span><span class="p">,</span> <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot;bw&quot;</span><span class="p">:</span> <span class="n">bw</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">id_vars</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coef&#39;</span><span class="p">,</span> <span class="s1">&#39;bw&#39;</span><span class="p">],</span> <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+Mass points detected in the running variable.
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>coef</th>
+      <th>l</th>
+      <th>u</th>
+      <th>bw</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.738404</td>
+      <td>0.359887</td>
+      <td>1.116922</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.544532</td>
+      <td>0.214505</td>
+      <td>0.874560</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.645092</td>
+      <td>0.354021</td>
+      <td>0.936162</td>
+      <td>1.5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.597275</td>
+      <td>0.344312</td>
+      <td>0.850238</td>
+      <td>2.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.548945</td>
+      <td>0.318897</td>
+      <td>0.778993</td>
+      <td>2.5</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span> <span class="o">=</span> <span class="mi">200</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s1">&#39;bw&#39;</span><span class="p">,</span> <span class="s1">&#39;coef&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df1</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">bw</span><span class="p">:</span>
+    <span class="n">r_d</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="o">.</span><span class="n">bw</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;bw&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">r_d</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">6.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">.3</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Regression coefficients &amp; 95% CI&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Bandwidth&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">15</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/040fc98ab08bbcf52f8828f33c68dc1ee27c3333642797a764a0add89263b3f1.png" src="../_images/040fc98ab08bbcf52f8828f33c68dc1ee27c3333642797a764a0add89263b3f1.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rdplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">tmt_status</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cutoff</span><span class="p">,</span> <span class="n">kernel</span> <span class="o">=</span> <span class="s2">&quot;tri&quot;</span><span class="p">,</span> <span class="n">ci</span><span class="o">=</span><span class="mi">95</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/535aaf4f41046b04e55f2f6aab4483fdc8f93887956be78a55da63b6204de41f.png" src="../_images/535aaf4f41046b04e55f2f6aab4483fdc8f93887956be78a55da63b6204de41f.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="figure-with-confidence-intervals">
+<h2><span class="section-number">8.3. </span>Figure with Confidence Intervals<a class="headerlink" href="#figure-with-confidence-intervals" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/RDD_data.dta&quot;</span><span class="p">)</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;tmt_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">tmt_status</span> <span class="o">==</span> <span class="s2">&quot;Control&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">data2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2_tr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data2_cr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;tmt_status ~ bs(pmt_score, 3)&quot;</span>
+
+<span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="n">ols_tr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+
+<span class="n">ols_cr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xcr</span><span class="p">)</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#ba3716&quot;</span><span class="p">,</span> <span class="s2">&quot;#128e23&quot;</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Proxy means test score&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Receiving treatment (95% CI)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.81</span><span class="p">,</span> <span class="mf">.4</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a6d103702aea8212290b711ddeab2911df80ca9d54d9b718f5bd1c972dfb5177.png" src="../_images/a6d103702aea8212290b711ddeab2911df80ca9d54d9b718f5bd1c972dfb5177.png" />
+</div>
+</div>
+</section>
+<section id="figure-with-confidence-intervals-and-points">
+<h2><span class="section-number">8.4. </span>Figure with Confidence Intervals and Points<a class="headerlink" href="#figure-with-confidence-intervals-and-points" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Using data2 </span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/RDD_data.dta&quot;</span><span class="p">)</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;tmt_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">tmt_status</span> <span class="o">==</span> <span class="s2">&quot;Control&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">data2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">data2_tr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data2_cr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;tmt_status ~ bs(pmt_score, 3)&quot;</span>
+
+<span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="n">ols_tr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+
+<span class="n">ols_cr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xcr</span><span class="p">)</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bw</span> <span class="o">=</span> <span class="mf">1.015</span>
+<span class="n">br</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">)</span> <span class="o">+</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">bw</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">,</span> <span class="n">br</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">mm</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">,</span> <span class="n">br</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">df4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">df4</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="s1">&#39;uuid&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+<span class="n">df4</span><span class="p">[[</span><span class="s1">&#39;pmt&#39;</span><span class="p">,</span> <span class="s1">&#39;tmt&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">]]</span>  <span class="o">=</span> <span class="n">mm</span><span class="p">[[</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;tmt_status&#39;</span><span class="p">,</span> <span class="s1">&#39;treatment&#39;</span><span class="p">]]</span>
+<span class="n">df4_cr</span> <span class="o">=</span> <span class="n">df4</span><span class="p">[</span><span class="n">df4</span><span class="o">.</span><span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">df4_tr</span> <span class="o">=</span> <span class="n">df4</span><span class="p">[</span><span class="n">df4</span><span class="o">.</span><span class="n">f</span> <span class="o">!=</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#ba3716&quot;</span><span class="p">,</span> <span class="s2">&quot;#128e23&quot;</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;pmt&quot;</span><span class="p">,</span> <span class="s2">&quot;tmt&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df4_tr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;pmt&quot;</span><span class="p">,</span> <span class="s2">&quot;tmt&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df4_cr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Proxy means test score&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Receiving treatment (95% CI)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.81</span><span class="p">,</span> <span class="mf">.4</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c89eb9e477f98688310262c41bb7f62c3ea1cdf67f63f7d466b8ba20f2532835.png" src="../_images/c89eb9e477f98688310262c41bb7f62c3ea1cdf67f63f7d466b8ba20f2532835.png" />
+</div>
+</div>
+</section>
+<section id="figure-with-point-estimate">
+<h2><span class="section-number">8.5. </span>Figure with Point estimate<a class="headerlink" href="#figure-with-point-estimate" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/main/data/evaluation.dta&quot;</span><span class="p">)</span>
+
+<span class="n">cutoff</span> <span class="o">=</span> <span class="mi">58</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment_locality</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">poverty_index</span> <span class="o">&lt;=</span> <span class="n">cutoff</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;health_expenditures&quot;</span><span class="p">,</span> <span class="s2">&quot;treatment&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+
+
+<span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">data_treat</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data_crtl</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;health_expenditures ~ bs(poverty_index, df = 3)&quot;</span>
+
+<span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+<span class="n">y1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+
+<span class="n">data_treat</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">lr</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">data_crtl</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">lr</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">min_crtl</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">data_crtl</span><span class="o">.</span><span class="n">yhat</span><span class="p">)</span>
+<span class="n">max_treat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">data_treat</span><span class="o">.</span><span class="n">yhat</span><span class="p">)</span>
+<span class="n">effect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">((</span><span class="n">min_crtl</span> <span class="o">-</span> <span class="n">max_treat</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">min_crtl</span><span class="p">,</span> <span class="n">max_treat</span><span class="p">])</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;yhat&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Not eligible&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;yhat&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Eligible&quot;</span><span class="p">)</span>
+
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="mf">.95</span><span class="p">,</span> <span class="mf">.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Baseline Poverty Index&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Health Expenditures ($)&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">effect</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="n">max_treat</span><span class="p">),</span> <span class="n">xytext</span> <span class="o">=</span> <span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="n">min_crtl</span><span class="p">),</span> 
+            <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s2">&quot;&lt;-&gt;&quot;</span><span class="p">,</span>
+                            <span class="n">connectionstyle</span><span class="o">=</span><span class="s2">&quot;arc3&quot;</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d2f5357b1ed0a6554f172f9f6cfa76cd2007a5c57190119ba3fabaf643488912.png" src="../_images/d2f5357b1ed0a6554f172f9f6cfa76cd2007a5c57190119ba3fabaf643488912.png" />
+</div>
+</div>
+</section>
+<section id="figure-with-confidence-intervals-and-histograms">
+<h2><span class="section-number">8.6. </span>Figure with Confidence Intervals and Histograms<a class="headerlink" href="#figure-with-confidence-intervals-and-histograms" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Using data2 </span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/RDD_data.dta&quot;</span><span class="p">)</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;tmt_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">tmt_status</span> <span class="o">==</span> <span class="s2">&quot;Control&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">data2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">data2_tr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data2_cr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;tmt_status ~ bs(pmt_score, 3)&quot;</span>
+
+<span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="n">ols_tr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+
+<span class="n">ols_cr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xcr</span><span class="p">)</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bw</span> <span class="o">=</span> <span class="mf">.2</span>
+<span class="n">br</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">)</span> <span class="o">+</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">bw</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">,</span> <span class="n">br</span><span class="p">))</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+<span class="n">mm</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pmt_score</span><span class="p">,</span> <span class="n">br</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">df4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">df4</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span><span class="o">=</span> <span class="n">n</span><span class="p">[</span><span class="s1">&#39;uuid&#39;</span><span class="p">]</span>
+<span class="n">df4</span><span class="p">[[</span><span class="s1">&#39;pmt&#39;</span><span class="p">,</span> <span class="s1">&#39;tmt&#39;</span><span class="p">,</span> <span class="s1">&#39;f&#39;</span><span class="p">]]</span>  <span class="o">=</span> <span class="n">mm</span><span class="p">[[</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;tmt_status&#39;</span><span class="p">,</span> <span class="s1">&#39;treatment&#39;</span><span class="p">]]</span>
+<span class="n">df4</span><span class="p">[</span><span class="s1">&#39;n&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">df4</span><span class="o">.</span><span class="n">n</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">df4</span><span class="o">.</span><span class="n">n</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">df4</span><span class="o">.</span><span class="n">n</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">df4</span><span class="o">.</span><span class="n">n</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">5</span>
+
+<span class="n">df4</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>n</th>
+      <th>pmt</th>
+      <th>tmt</th>
+      <th>f</th>
+    </tr>
+    <tr>
+      <th>pmt_score</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>(-10.295, -10.095]</th>
+      <td>0.01</td>
+      <td>-10.114500</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>(-10.095, -9.895]</th>
+      <td>0.01</td>
+      <td>-10.004590</td>
+      <td>1.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>(-9.895, -9.695]</th>
+      <td>0.01</td>
+      <td>-9.777099</td>
+      <td>0.0</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>(-9.695, -9.495]</th>
+      <td>0.00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>(-9.495, -9.295]</th>
+      <td>0.00</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#e54e1b&quot;</span><span class="p">,</span> <span class="s2">&quot;#47b28b&quot;</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s2">&quot;pmt_score&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">log</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="s2">&quot;pmt_score&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">log</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Proxy means test score&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Receiving treatment (95% CI)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/de29dd1c697fcfb75b5a3317c9fefe70f00e3c781adb7af76508e7e81d7e8781.png" src="../_images/de29dd1c697fcfb75b5a3317c9fefe70f00e3c781adb7af76508e7e81d7e8781.png" />
+</div>
+</div>
+</section>
+<section id="figure-with-linear-fits-and-local-linear-fits">
+<h2><span class="section-number">8.7. </span>Figure with Linear Fits and Local Linear Fits<a class="headerlink" href="#figure-with-linear-fits-and-local-linear-fits" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Using data2 </span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/RDD_data.dta&quot;</span><span class="p">)</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">cutoff</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">cutoff</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;tmt_status&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">tmt_status</span> <span class="o">==</span> <span class="s2">&quot;Control&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">data2</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="n">data2_tr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data2_cr</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;tmt_status ~ pmt_score&quot;</span>
+
+<span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="n">ols_tr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+
+<span class="n">ols_cr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xcr</span><span class="p">)</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;upper&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_upper&#39;</span><span class="p">]</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">get_prediction</span><span class="p">()</span><span class="o">.</span><span class="n">summary_frame</span><span class="p">()[</span><span class="s1">&#39;mean_ci_lower&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;tmt_status ~ bs(pmt_score, 3)&quot;</span>
+
+<span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+<span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">return_type</span> <span class="o">=</span> <span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="n">ols_tr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ytr</span><span class="p">,</span> <span class="n">xtr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_tr</span><span class="p">[</span><span class="s1">&#39;yhat_3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_tr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtr</span><span class="p">)</span>
+
+<span class="n">ols_cr</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">OLS</span><span class="p">(</span><span class="n">ycr</span><span class="p">,</span> <span class="n">xcr</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">data2_cr</span><span class="p">[</span><span class="s1">&#39;yhat_3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ols_cr</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xcr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#ba3716&quot;</span><span class="p">,</span> <span class="s2">&quot;#128e23&quot;</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat_3&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>  <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;yhat_3&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>  <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_tr</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="s1">&#39;pmt_score&#39;</span><span class="p">,</span> <span class="s1">&#39;upper&#39;</span><span class="p">,</span> <span class="s1">&#39;lower&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2_cr</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Proxy means test score&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Receiving treatment (95% CI)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">.76</span><span class="p">,</span> <span class="mf">.25</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a9c80659db50daa72d833e57b1d8f4cf1a1e95305cb4f3ec485b682ffddca80d.png" src="../_images/a9c80659db50daa72d833e57b1d8f4cf1a1e95305cb4f3ec485b682ffddca80d.png" />
+</div>
+</div>
+</section>
+<section id="figure-with-points">
+<h2><span class="section-number">8.8. </span>Figure with Points<a class="headerlink" href="#figure-with-points" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/main/data/evaluation.dta&quot;</span><span class="p">)</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="mi">58</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment_locality</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">data</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">poverty_index</span> <span class="o">&lt;=</span> <span class="n">cutoff</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;health_expenditures&quot;</span><span class="p">,</span> <span class="s2">&quot;treatment&quot;</span><span class="p">]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data_treat</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment</span> <span class="o">==</span> <span class="kc">True</span><span class="p">]</span>
+<span class="n">data_crtl</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">treatment</span> <span class="o">==</span> <span class="kc">False</span><span class="p">]</span>
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot;health_expenditures ~ bs(poverty_index, df = 3)&quot;</span>
+<span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+<span class="n">y1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">fmla</span><span class="p">,</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s2">&quot;dataframe&quot;</span><span class="p">)</span>
+<span class="n">data_treat</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">lr</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">data_crtl</span><span class="p">[</span><span class="s1">&#39;yhat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">lr</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">)</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">dpi</span> <span class="o">=</span> <span class="n">dpi_f</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;yhat&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Not eligible&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;yhat&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Eligible&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;health_expenditures&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_treat</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;poverty_index&quot;</span><span class="p">,</span> <span class="s2">&quot;health_expenditures&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data_crtl</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.1</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="mf">.95</span><span class="p">,</span> <span class="mf">.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Baseline Poverty Index&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Health Expenditures ($)&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">20</span><span class="p">));</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0370e4e7d7a987b6161c13287956cf78c179304d485e48beaea5e256ccfee41b.png" src="../_images/0370e4e7d7a987b6161c13287956cf78c179304d485e48beaea5e256ccfee41b.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "d2cml-ai/python_visual_library",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./python_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="07_random_inference.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>Randomization Inference</p>
+      </div>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figurewith-2d-bins">8.1. Figurewith 2D bins</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-with-differet-bandwidths">8.2. Results with differet bandwidths</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-confidence-intervals">8.3. Figure with Confidence Intervals</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-confidence-intervals-and-points">8.4. Figure with Confidence Intervals and Points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-point-estimate">8.5. Figure with Point estimate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-confidence-intervals-and-histograms">8.6. Figure with Confidence Intervals and Histograms</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-linear-fits-and-local-linear-fits">8.7. Figure with Linear Fits and Local Linear Fits</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#figure-with-points">8.8. Figure with Points</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Quispe
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+MIT Licence
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,2212 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>4. Regression Coefficientes &#8212; Python Visual Library</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=e353d410970836974a52" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=e353d410970836974a52" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=e353d410970836974a52" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=e353d410970836974a52" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'python_notebooks/04_reg_coef';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Difference in differences" href="05_difference_in_differences.html" />
+    <link rel="prev" title="3. Scatter Plots" href="03_scatter.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/py_vis.png" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/py_vis.png" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Python Visual Library 1
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="01_bar.html">1. Bar Plots</a></li>
+<li class="toctree-l1"><a class="reference internal" href="02_density.html">2. Density</a></li>
+<li class="toctree-l1"><a class="reference internal" href="03_scatter.html">3. Scatter Plots</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. Regression Coefficientes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="05_difference_in_differences.html">5. Difference in differences</a></li>
+<li class="toctree-l1"><a class="reference internal" href="06_even_study.html">6. Even study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="07_random_inference.html">7. Randomization Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="08_reg_rdd.html">8. Regression discontinuity</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/d2cml-ai/python_visual_library/blob/master/python_notebooks/04_reg_coef.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch onColab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="initThebeSBT()"
+  class="btn btn-sm btn-launch-thebe dropdown-item"
+  title="Launch Thebe"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-play"></i>
+  </span>
+<span class="btn__text-container">Live Code</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/d2cml-ai/python_visual_library" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/d2cml-ai/python_visual_library/edit/master/python_notebooks/04_reg_coef.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/d2cml-ai/python_visual_library/issues/new?title=Issue%20on%20page%20%2Fpython_notebooks/04_reg_coef.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/python_notebooks/04_reg_coef.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Regression Coefficientes</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-table">4.1. With Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-tables-of-two-datasets">4.2. With Tables of Two Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-graded-error-bars">4.3. With Graded error bars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginal-effect">4.4. Marginal Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-outcomes">4.5. Multiple Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#point-estimates-by-rounds">4.6. Point Estimates by Rounds</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="regression-coefficientes">
+<h1><span class="section-number">4. </span>Regression Coefficientes<a class="headerlink" href="#regression-coefficientes" title="Permalink to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import modules</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span><span class="o">,</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span><span class="o">,</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span><span class="o">,</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">math</span><span class="o">,</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">patsy</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="n">label_encoder</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">patsy</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">label_encoder</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;sklearn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="with-table">
+<h2><span class="section-number">4.1. </span>With Table<a class="headerlink" href="#with-table" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/METable.dta&quot;</span><span class="p">)</span>
+<span class="n">data1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;refer&#39;</span><span class="p">,</span> <span class="s1">&#39;med_class_any_6&#39;</span><span class="p">,</span> <span class="s1">&#39;med_class_any_16&#39;</span><span class="p">]:</span>
+    <span class="n">label_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">data1</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>study</th>
+      <th>facilitycode</th>
+      <th>case</th>
+      <th>as_correct</th>
+      <th>as_h1</th>
+      <th>as_h2</th>
+      <th>as_h6</th>
+      <th>as_h7</th>
+      <th>as_h8</th>
+      <th>as_h12</th>
+      <th>...</th>
+      <th>kenya_fac_qual_code_2</th>
+      <th>kenya_fac_qual_code_3</th>
+      <th>price_kenya</th>
+      <th>facility_private</th>
+      <th>checklist_essential</th>
+      <th>sp_roster_age</th>
+      <th>sp_roster_bmi</th>
+      <th>sp_roster_bp</th>
+      <th>sp_roster_bp_sys</th>
+      <th>sp_roster_male</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Kenya</td>
+      <td>9052302</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>230.0</td>
+      <td>Private</td>
+      <td>0.500</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Kenya</td>
+      <td>9012207</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>350.0</td>
+      <td>Private</td>
+      <td>0.625</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Kenya</td>
+      <td>9052301</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>400.0</td>
+      <td>Private</td>
+      <td>0.125</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kenya</td>
+      <td>9022203</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>250.0</td>
+      <td>Private</td>
+      <td>0.125</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Kenya</td>
+      <td>9012206</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>300.0</td>
+      <td>Private</td>
+      <td>0.125</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 84 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># plt.figure(figsize=(8, 12))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;as_correct&quot;</span><span class="p">,</span> <span class="s2">&quot;ch_correct&quot;</span><span class="p">,</span> <span class="s2">&quot;cp_correct&quot;</span><span class="p">,</span> <span class="s2">&quot;tb_correct&quot;</span>
+     <span class="p">,</span> <span class="s2">&quot;refer&quot;</span>
+     <span class="p">,</span> <span class="s2">&quot;med_any&quot;</span>
+     <span class="p">,</span><span class="s2">&quot;med_class_any_6&quot;</span><span class="p">,</span> <span class="s2">&quot;med_class_any_16&quot;</span>
+    <span class="p">]</span>
+<span class="n">y_label_t</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Asthma: Inhaler/Bronchodilator&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Child Diarrhea: ORS&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Chest Pain: Referencial/Aspirin/ECG&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Tuberculosis: AFB Smear&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Referred (non-diarrhea)&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Any Medication&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Antibiotics&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Steroids&quot;</span>
+<span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot; ~ facility_private + C(case_code)&quot;</span>
+<span class="n">fmla1</span> <span class="o">=</span> <span class="s2">&quot; ~ facility_private&quot;</span>
+
+<span class="n">coef</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">lower</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">upper</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">p_v</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">varname</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># mdl = smf.glm(i + fmla, data = data1).fit()</span>
+        <span class="n">mdl</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">();</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">mdl</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">fmla1</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data1</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">();</span>
+        <span class="c1"># mdl = smf.glm(i + fmla1, data = data1).fit()</span>
+        <span class="c1"># print(i + fmla1)</span>
+        
+    <span class="n">coef_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">coef_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coef_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]))</span>
+    
+    <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coef_val</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">p_v</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coef_val</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">lower</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coef_val</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">upper</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coef_val</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+    <span class="n">varname</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                                  
+        
+<span class="n">df0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;coef&quot;</span><span class="p">:</span> <span class="n">coef</span><span class="p">,</span>
+        <span class="s2">&quot;p_value&quot;</span><span class="p">:</span> <span class="n">p_v</span><span class="p">,</span>
+        <span class="s2">&quot;l&quot;</span><span class="p">:</span> <span class="n">lower</span><span class="p">,</span>
+        <span class="s2">&quot;u&quot;</span><span class="p">:</span> <span class="n">upper</span><span class="p">,</span>
+        <span class="s2">&quot;var&quot;</span><span class="p">:</span> <span class="n">varname</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df0</span><span class="p">,</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;var&#39;</span><span class="p">,</span> <span class="s1">&#39;coef&#39;</span><span class="p">,</span> <span class="s2">&quot;p_value&quot;</span><span class="p">],</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;range&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;range_val&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="n">OR</span> <span class="o">=</span> <span class="n">df0</span><span class="o">.</span><span class="n">coef</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span>
+<span class="n">new_or</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">OR</span><span class="p">:</span>
+    <span class="n">vl</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">new_or</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+         Current function value: 0.486007
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.486007
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.574092
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.574092
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.308251
+         Iterations 7
+Optimization terminated successfully.
+         Current function value: 0.308251
+         Iterations 7
+Optimization terminated successfully.
+         Current function value: 0.607698
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.607698
+         Iterations 5
+Warning: Maximum number of iterations has been exceeded.
+         Current function value: 0.155485
+         Iterations: 35
+Optimization terminated successfully.
+         Current function value: 0.187942
+         Iterations 8
+Optimization terminated successfully.
+         Current function value: 0.531125
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.671791
+         Iterations 4
+Warning: Maximum number of iterations has been exceeded.
+         Current function value: 0.072542
+         Iterations: 35
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### Plots    </span>
+
+<span class="n">OR</span> <span class="o">=</span> <span class="n">df0</span><span class="o">.</span><span class="n">coef</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">)</span>
+<span class="n">new_or</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">OR</span><span class="p">:</span>
+    <span class="n">new_vl</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">new_or</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_vl</span><span class="p">)</span>
+    
+<span class="n">df0</span><span class="p">[</span><span class="s2">&quot;OR&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_or</span>
+<span class="n">table_reg</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="n">df0</span><span class="p">[</span><span class="s2">&quot;OR&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;  -  &quot;</span> <span class="o">+</span>  <span class="s2">&quot;[&quot;</span> <span class="o">+</span> <span class="n">df0</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; , &quot;</span> <span class="o">+</span> <span class="n">df0</span><span class="o">.</span><span class="n">u</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;]&quot;</span> <span class="o">+</span> <span class="s2">&quot;  -  &quot;</span> <span class="o">+</span> <span class="n">df0</span><span class="o">.</span><span class="n">p_value</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df1</span><span class="p">[</span><span class="n">df1</span><span class="p">[</span><span class="s2">&quot;var&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;range_val&quot;</span><span class="p">,</span> <span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;coef&quot;</span><span class="p">,</span> <span class="s2">&quot;var&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+    
+    
+<span class="n">omit_all</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">]</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit_all</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;-.&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">lbl</span> <span class="o">=</span> <span class="n">table_reg</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">3.35</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">lbl</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">);</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">3.35</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="s2">&quot;OR         95% CI           P-Value&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">13</span><span class="p">);</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mf">4.1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\leftarrow$ Favors Public                         Favors Privte $\rightarrow$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">y_label_t</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/231b9ada6741613be0c75d43dbd8e7fd8598ede9c7c45f234d36f2020decdc9e.png" src="../_images/231b9ada6741613be0c75d43dbd8e7fd8598ede9c7c45f234d36f2020decdc9e.png" />
+</div>
+</div>
+</section>
+<section id="with-tables-of-two-datasets">
+<h2><span class="section-number">4.2. </span>With Tables of Two Datasets<a class="headerlink" href="#with-tables-of-two-datasets" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/main/data/METable2data.dta&quot;</span><span class="p">)</span>
+<span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/main/data/METable2data2.dta&quot;</span><span class="p">)</span>
+<span class="n">data1</span><span class="p">[</span><span class="s1">&#39;case_3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data1</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span> <span class="s2">&quot;Case 3&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_vars</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;correct&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;treat_cxr&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;re_3&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;re_4&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;med_any&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;med_l_any_2&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;med_l_any_3&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;med_k_any_9&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_vars</span><span class="p">:</span>
+        <span class="c1"># print(i)</span>
+        <span class="n">label_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">j</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">coef0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">l0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u0</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_label</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">p_val</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_vars</span><span class="p">)</span> 
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s1">&#39;~ case_3  + C(city) + C(type_formal)&#39;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_vars</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">y_0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">y_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_0</span><span class="p">)</span>
+        <span class="n">y_0</span> <span class="o">=</span> <span class="n">y_0</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">y1</span><span class="p">,</span> <span class="n">x_1</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data1</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+    <span class="n">logit_glm</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">GLM</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">x_1</span><span class="p">,</span> <span class="n">var_weights</span><span class="o">=</span><span class="n">data1</span><span class="p">[</span><span class="s1">&#39;weight_city&#39;</span><span class="p">],</span> <span class="n">family</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">families</span><span class="o">.</span><span class="n">Binomial</span><span class="p">())</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;HC1&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># print(logit_glm)</span>
+    <span class="n">logit_arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">logit_glm</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logit_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">coef0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">l0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">logit_arr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">u0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">logit_arr</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">p_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">logit_arr</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1"># print(logit_df)</span>
+    <span class="n">y_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="n">coef0</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span> <span class="p">:</span> <span class="n">l0</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="n">u0</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span> <span class="p">:</span> <span class="n">y_label</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">:</span> <span class="n">y_pos</span><span class="p">,</span> <span class="s1">&#39;pval&#39;</span><span class="p">:</span> <span class="n">p_val</span><span class="p">})</span>
+<span class="n">df11</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df1</span><span class="p">,</span> <span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="s2">&quot;pval&quot;</span><span class="p">],</span> <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fmla2</span> <span class="o">=</span> <span class="s1">&#39;~ sp4_spur_1&#39;</span>
+<span class="n">coef</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">u</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_label</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_vars</span><span class="p">)</span> 
+<span class="n">p_val</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_vars</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">y_0</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">y_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_0</span><span class="p">)</span>
+        <span class="n">y_0</span> <span class="o">=</span> <span class="n">y_0</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="n">mdl2</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">fmla2</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data2</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># print(mdl2)</span>
+    <span class="n">coefs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdl2</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">coef</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">c</span><span class="p">))</span>
+    <span class="n">l</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">u</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">coefs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">y_label</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">p_val</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coefs</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="n">coef</span><span class="p">,</span> <span class="s2">&quot;l&quot;</span> <span class="p">:</span> <span class="n">l</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">:</span> <span class="n">u</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span> <span class="p">:</span> <span class="n">y_label</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">:</span> <span class="n">y_pos</span><span class="p">,</span> <span class="s2">&quot;pval&quot;</span><span class="p">:</span> <span class="n">p_val</span><span class="p">})</span>
+<span class="n">df21</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df2</span><span class="p">,</span> <span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="s2">&quot;pval&quot;</span><span class="p">],</span> <span class="n">value_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;l&#39;</span><span class="p">,</span> <span class="s1">&#39;u&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+         Current function value: 0.648644
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.161501
+         Iterations 8
+Optimization terminated successfully.
+         Current function value: 0.635826
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.638312
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.495496
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.320903
+         Iterations 6
+Optimization terminated successfully.
+         Current function value: 0.649982
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.097266
+         Iterations 8
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df1</span> <span class="o">=</span> <span class="n">df1</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">df2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># df1.iloc[0, :]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">facecolor</span> <span class="o">=</span> <span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">)</span>
+
+<span class="n">max_r</span> <span class="o">=</span> <span class="mi">7</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_vars</span><span class="p">:</span>
+    <span class="n">ref_data1</span> <span class="o">=</span> <span class="n">df11</span><span class="p">[</span><span class="n">df11</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data1</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df11</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_vars</span><span class="p">:</span>
+    <span class="n">ref_data2</span> <span class="o">=</span> <span class="n">df21</span><span class="p">[</span><span class="n">df21</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data2</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df21</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">]</span>
+<span class="n">ylabels</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Steroids&#39;</span><span class="p">,</span> <span class="s1">&#39;Other Antibiotic&#39;</span><span class="p">,</span> <span class="s1">&#39;Fluoroquinolone&#39;</span><span class="p">,</span> <span class="s1">&#39;Any Medicine&#39;</span><span class="p">,</span> <span class="s1">&#39;Xpert MTB/RIF&#39;</span><span class="p">,</span> <span class="s1">&#39;Sputum AFB&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;Chest-X-Ray&#39;</span><span class="p">,</span> <span class="s1">&#39;Correct Management&#39;</span>
+<span class="p">]</span>
+           
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">max_r</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">max_r</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.5</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">ylabels</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">))</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">.5</span> <span class="p">,</span> <span class="s2">&quot;OR&quot;</span><span class="p">)</span> <span class="c1"># OR</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mf">3.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">.5</span><span class="p">,</span> <span class="s2">&quot;95%CI&quot;</span><span class="p">)</span> <span class="c1"># CI</span>
+    <span class="n">ax</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mf">5.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)</span> <span class="o">+</span> <span class="mf">.5</span><span class="p">,</span> <span class="s2">&quot;P-value&quot;</span><span class="p">)</span> <span class="c1"># CI</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df1</span><span class="p">)):</span>
+    <span class="n">ref_t1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># OR</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">ref_t1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> , </span><span class="si">{</span><span class="n">ref_t1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="p">)</span> <span class="c1"># CI</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># P-value</span>
+    
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\leftarrow$ Favors Ordinary (N = 407)    Favors Privte  (N = 352)$\rightarrow$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;A. Case 1 vs Case 3 in all providers receiving both cases</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df2</span><span class="p">)):</span>
+    <span class="n">ref_t1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># OR</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="n">ref_t1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2"> , </span><span class="si">{</span><span class="n">ref_t1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="p">)</span> <span class="c1"># CI</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">max_r</span> <span class="o">+</span> <span class="mi">6</span><span class="p">,</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">ref_t1</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="c1"># P-value</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\leftarrow$ Favors Ordinary (N = 50)    Favors Privte  (N = 51)$\rightarrow$&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;B. SP4 with and without sputum report in Mumbai MBBS+</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+
+<span class="c1"># ax[0].set_xlim(0, 10)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a626611343a2291d99d9d760826c88be3133449cdfac40844b687241a626b402.png" src="../_images/a626611343a2291d99d9d760826c88be3133449cdfac40844b687241a626b402.png" />
+</div>
+</div>
+</section>
+<section id="with-graded-error-bars">
+<h2><span class="section-number">4.3. </span>With Graded error bars<a class="headerlink" href="#with-graded-error-bars" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">linearmodels.panel</span> <span class="kn">import</span> <span class="n">PanelOLS</span> <span class="k">as</span> <span class="n">fe</span>
+
+<span class="n">data3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/ReplicationDataGhanaJDE_short.dta&quot;</span><span class="p">)</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">data30</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[(</span><span class="n">data3</span><span class="o">.</span><span class="n">wave</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">data3</span><span class="o">.</span><span class="n">cashtreat</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">a</span> <span class="o">==</span> <span class="mi">3</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">b</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cond</span>
+
+
+<span class="n">data30_she</span> <span class="o">=</span> <span class="n">data30</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;sheno&#39;</span><span class="p">)</span>
+<span class="n">data30</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data30_she</span><span class="p">[</span><span class="s1">&#39;wave&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">3</span> <span class="p">)</span> <span class="o">&amp;</span> <span class="n">data30_she</span><span class="p">[</span><span class="s1">&#39;timetreat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="n">data30</span><span class="p">[</span><span class="s1">&#39;control&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data30_she</span><span class="p">[</span><span class="s1">&#39;control&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">data30</span><span class="p">[</span><span class="s1">&#39;after&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data30_she</span><span class="p">[</span><span class="s1">&#39;wave&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span><span class="mi">3</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+
+
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;realfinalprofit&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_health_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_education_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_total_3months&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;wave&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;equiptreat&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;after&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;sheno&quot;</span>
+<span class="p">]</span>
+<span class="n">data31</span> <span class="o">=</span> <span class="n">data30</span><span class="p">[(</span><span class="n">data30</span><span class="p">[</span><span class="s1">&#39;treatment&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">data30</span><span class="o">.</span><span class="n">control</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)][</span><span class="n">features</span><span class="p">]</span>
+<span class="n">data31</span> <span class="o">=</span> <span class="n">data31</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sheno&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">])</span>
+<span class="n">data31</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>realfinalprofit</th>
+      <th>expend_health_3months</th>
+      <th>expend_education_3months</th>
+      <th>expend_total_3months</th>
+      <th>equiptreat</th>
+      <th>after</th>
+    </tr>
+    <tr>
+      <th>sheno</th>
+      <th>wave</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">110101604</th>
+      <th>5</th>
+      <td>351.575378</td>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>45.0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>205.722168</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>32.0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>402.129395</td>
+      <td>23.0</td>
+      <td>0.0</td>
+      <td>73.0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>322.331146</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>25.0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>228.246490</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>30.0</td>
+      <td>0</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span> 
+    <span class="s2">&quot;realfinalprofit&quot;</span><span class="p">,</span> 
+     <span class="s2">&quot;expend_health_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_education_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_total_3months&quot;</span>
+<span class="p">]</span>
+
+<span class="n">fmla</span> <span class="o">=</span> <span class="s2">&quot; ~ equiptreat * after - 1&quot;</span>
+
+<span class="n">c</span><span class="p">,</span> <span class="n">Ci90</span><span class="p">,</span> <span class="n">Ci95</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_lbl</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_n</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
+    <span class="n">y_lbl</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="k">while</span> <span class="n">y_n</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">y_pos</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">y_n</span><span class="p">,</span> <span class="n">y_n</span><span class="p">])</span>
+        <span class="n">y_n</span> <span class="o">=</span> <span class="n">y_n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">y_data</span><span class="p">,</span> <span class="n">x_data</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">fmla</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data31</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+    <span class="n">x_data1</span> <span class="o">=</span> <span class="n">x_data</span><span class="p">[</span><span class="s1">&#39;equiptreat:after[T.True]&#39;</span><span class="p">]</span>
+    <span class="n">y_data</span><span class="p">,</span> <span class="n">x_data1</span>
+    <span class="n">mdl</span> <span class="o">=</span> <span class="n">fe</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">exog</span> <span class="o">=</span> <span class="n">x_data1</span><span class="p">,</span> <span class="n">time_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_absorbed</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span> <span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;clustered&#39;</span>
+            <span class="p">,</span> <span class="n">cluster_entity</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+    <span class="n">ci95</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">ci90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">conf_int</span><span class="p">(</span><span class="mf">.9</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">Ci90</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ci90</span><span class="p">)</span>
+    <span class="n">Ci95</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ci95</span><span class="p">)</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">mdl</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mdl</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>    
+<span class="n">Ci90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Ci90</span><span class="p">)</span>
+<span class="n">Ci95</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">Ci95</span><span class="p">)</span>    
+<span class="n">y_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_pos</span><span class="p">)</span>
+<span class="n">y_lbl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_lbl</span><span class="p">)</span>
+<span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+       <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> 
+       <span class="s2">&quot;ci90&quot;</span><span class="p">:</span> <span class="n">Ci90</span><span class="p">,</span> 
+       <span class="s2">&quot;ci95&quot;</span><span class="p">:</span> <span class="n">Ci95</span><span class="p">,</span> 
+       <span class="s2">&quot;y_pos&quot;</span><span class="p">:</span> <span class="n">y_pos</span> 
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>point</th>
+      <th>ci90</th>
+      <th>ci95</th>
+      <th>y_pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-9.476182</td>
+      <td>-30.082561</td>
+      <td>-34.033920</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-9.476182</td>
+      <td>11.130197</td>
+      <td>15.081556</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-9.610347</td>
+      <td>-23.957912</td>
+      <td>-26.709284</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-9.610347</td>
+      <td>4.737218</td>
+      <td>7.488590</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>18.580187</td>
+      <td>-9.496230</td>
+      <td>-14.880299</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>18.580187</td>
+      <td>46.656605</td>
+      <td>52.040673</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>19.035654</td>
+      <td>-15.885621</td>
+      <td>-22.581464</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>19.035654</td>
+      <td>53.956929</td>
+      <td>60.652772</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">lws</span> <span class="o">=</span> <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#4b6189&quot;</span><span class="p">,</span> <span class="s2">&quot;#478abc&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci90&quot;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="n">lws</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci95&quot;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="n">lws</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+<span class="n">ref_data</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[</span><span class="n">df3</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">==</span> <span class="mi">4</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci90&quot;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="n">lws</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;90%&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci95&quot;</span><span class="p">,</span> <span class="s1">&#39;y_pos&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">lw</span> <span class="o">=</span> <span class="n">lws</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">.7</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;95%&quot;</span><span class="p">)</span>
+
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]</span>
+<span class="n">y_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3mo Edu. Exp. (cedi)&#39;</span><span class="p">,</span> <span class="s1">&#39;3mo Health Exp&#39;</span><span class="p">,</span> <span class="s1">&#39;3mo Total Exp.&#39;</span><span class="p">,</span> <span class="s1">&#39;3mo Real Profit (cedi)&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Confidence level&quot;</span><span class="p">,</span> <span class="n">ncol</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">y_labels</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Point estimates &amp; 95% CI&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/113f10de3cffbbdb24c7a2959439e30c739350220c19a8229d0cb8e9d55e913e.png" src="../_images/113f10de3cffbbdb24c7a2959439e30c739350220c19a8229d0cb8e9d55e913e.png" />
+</div>
+</div>
+</section>
+<section id="marginal-effect">
+<h2><span class="section-number">4.4. </span>Marginal Effect<a class="headerlink" href="#marginal-effect" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_stata</span><span class="p">(</span><span class="s2">&quot;https://github.com/worldbank/r-econ-visual-library/raw/master/Library/Data/RegCoefME.dta&quot;</span><span class="p">)</span>
+<span class="n">data4</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>study</th>
+      <th>facilitycode</th>
+      <th>case</th>
+      <th>as_correct</th>
+      <th>as_h1</th>
+      <th>as_h2</th>
+      <th>as_h6</th>
+      <th>as_h7</th>
+      <th>as_h8</th>
+      <th>as_h12</th>
+      <th>...</th>
+      <th>kenya_fac_qual_code_2</th>
+      <th>kenya_fac_qual_code_3</th>
+      <th>price_kenya</th>
+      <th>facility_private</th>
+      <th>checklist_essential</th>
+      <th>sp_roster_age</th>
+      <th>sp_roster_bmi</th>
+      <th>sp_roster_bp</th>
+      <th>sp_roster_bp_sys</th>
+      <th>sp_roster_male</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Kenya</td>
+      <td>9052302</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>230.0</td>
+      <td>Private</td>
+      <td>0.500</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Kenya</td>
+      <td>9012207</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>350.0</td>
+      <td>Private</td>
+      <td>0.625</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Kenya</td>
+      <td>9052301</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>400.0</td>
+      <td>Private</td>
+      <td>0.125</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Kenya</td>
+      <td>9022203</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>250.0</td>
+      <td>Private</td>
+      <td>0.125</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Kenya</td>
+      <td>9012206</td>
+      <td>Child Diarrhea</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>No</td>
+      <td>No</td>
+      <td>300.0</td>
+      <td>Private</td>
+      <td>0.125</td>
+      <td>31</td>
+      <td>32.038578</td>
+      <td>130/80</td>
+      <td>130</td>
+      <td>Female</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 84 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y4</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="s1">&#39;as_correct&#39;</span><span class="p">,</span> <span class="s1">&#39;ch_correct&#39;</span><span class="p">,</span> <span class="s1">&#39;cp_correct&#39;</span><span class="p">,</span> <span class="s1">&#39;tb_correct&#39;</span><span class="p">,</span> 
+    <span class="c1"># &quot;refer&quot;</span>
+    <span class="s2">&quot;med_any&quot;</span><span class="p">,</span> <span class="s2">&quot;med_class_any_6&quot;</span><span class="p">,</span> <span class="s2">&quot;med_class_any_16&quot;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y4</span><span class="p">:</span>
+    <span class="n">label_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data4</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">data4</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">label_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">data4</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    
+    <span class="n">data4</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">data4</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">data4</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="c1"># print(set(data4[i]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">md1</span> <span class="o">=</span> <span class="s2">&quot; ~ facility_private + C(case_code)&quot;</span>
+<span class="n">md2</span> <span class="o">=</span> <span class="s2">&quot; ~ facility_private&quot;</span>
+
+
+<span class="n">ci95</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># CI</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># cofficiente</span>
+<span class="n">y_n</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># y posicion</span>
+<span class="n">y_name</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># y label</span>
+<span class="n">y_label</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">id_m</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># axis 0</span>
+
+<span class="n">main_row</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">correct_array</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;as_correct&#39;</span><span class="p">,</span> <span class="s1">&#39;ch_correct&#39;</span><span class="p">,</span> <span class="s1">&#39;cp_correct&#39;</span><span class="p">,</span> <span class="s1">&#39;tb_correct&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y4</span><span class="p">:</span>
+    
+    <span class="k">while</span> <span class="n">id_m</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">y4</span><span class="p">):</span> <span class="c1">## Y variables</span>
+        <span class="n">y_n</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">id_m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">id_m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">id_m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">id_m</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">id_m</span> <span class="o">=</span> <span class="n">id_m</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1">### ols</span>
+    
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">correct_array</span><span class="p">:</span>
+        <span class="n">mdl_ols</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">md2</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data4</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mdl_ols</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">md1</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data4</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="c1"># print(i)</span>
+        <span class="c1"># print(pd.DataFrame(mld_ols.summary().tables[1].data))</span>
+    
+    <span class="n">coef_ols</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdl_ols</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">main_row</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+    
+    <span class="n">point</span> <span class="o">=</span> <span class="n">coef_ols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">coef_ols</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">y_label</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">y_name</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;ols&quot;</span><span class="p">,</span> <span class="s2">&quot;ols&quot;</span><span class="p">])</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">point</span><span class="p">,</span> <span class="n">point</span><span class="p">])</span>
+    <span class="n">ci95</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">point</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">std</span><span class="p">,</span> <span class="n">point</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">std</span><span class="p">])</span>
+    
+    <span class="c1">### GLM</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">correct_array</span><span class="p">:</span>
+        <span class="n">mdl_glm</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">md2</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data4</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mdl_glm</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">md2</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">data4</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    
+    <span class="n">coef_glm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float_</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mdl_glm</span><span class="o">.</span><span class="n">get_margeff</span><span class="p">()</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span><span class="o">.</span><span class="n">tables</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">main_row</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+    
+    <span class="n">point_glm</span> <span class="o">=</span> <span class="n">coef_glm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">std_glm</span> <span class="o">=</span> <span class="n">coef_glm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">y_label</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">])</span>
+    <span class="n">y_name</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;glm&quot;</span><span class="p">,</span> <span class="s2">&quot;glm&quot;</span><span class="p">])</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">point_glm</span><span class="p">,</span> <span class="n">point_glm</span><span class="p">])</span>
+    <span class="n">ci95</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">point_glm</span> <span class="o">+</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">std_glm</span><span class="p">,</span> <span class="n">point_glm</span> <span class="o">-</span> <span class="mf">1.96</span> <span class="o">*</span> <span class="n">std_glm</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Optimization terminated successfully.
+         Current function value: 0.486007
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.574092
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.308251
+         Iterations 7
+Optimization terminated successfully.
+         Current function value: 0.607698
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.597636
+         Iterations 5
+Optimization terminated successfully.
+         Current function value: 0.692627
+         Iterations 3
+Optimization terminated successfully.
+         Current function value: 0.086124
+         Iterations 9
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df41</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;modelo&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_name</span><span class="p">),</span> 
+        <span class="s2">&quot;ylbel&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_label</span><span class="p">),</span>
+        <span class="s2">&quot;y_pos&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_n</span><span class="p">),</span>
+        <span class="s2">&quot;coef&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> 
+        <span class="s2">&quot;ci&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">ci95</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="n">mdls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ols&#39;</span><span class="p">,</span> <span class="s1">&#39;glm&#39;</span><span class="p">]</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df41</span><span class="o">.</span><span class="n">y_pos</span><span class="p">)</span>
+<span class="n">separate</span> <span class="o">=</span> <span class="mf">.2</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;#4392bc&#39;</span><span class="p">,</span> <span class="s1">&#39;#af370f&#39;</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mdls</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">y_val</span><span class="p">:</span>
+        <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df41</span><span class="p">[(</span><span class="n">df41</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df41</span><span class="o">.</span><span class="n">modelo</span> <span class="o">==</span> <span class="n">i</span><span class="p">)]</span>
+        
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;ols&quot;</span><span class="p">:</span>
+            <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">-</span> <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">separate</span> 
+            <span class="n">cl</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;glm&quot;</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span><span class="o">-</span> <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">separate</span> 
+            
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;coef&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="c1"># ax.text(&quot;coef&quot;, &quot;y_pos&quot;, &quot;ylbel&quot;, data = ref_data)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mdls</span><span class="p">:</span>
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df41</span><span class="p">[(</span><span class="n">df41</span><span class="o">.</span><span class="n">y_pos</span> <span class="o">==</span> <span class="mi">7</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df41</span><span class="o">.</span><span class="n">modelo</span> <span class="o">==</span> <span class="n">i</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;ols&quot;</span><span class="p">:</span>
+        <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">-</span> <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">separate</span> 
+        <span class="n">cl</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="s2">&quot;Linear Model&quot;</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;glm&quot;</span><span class="p">:</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="n">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">-</span> <span class="n">ref_data</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">separate</span> 
+        <span class="n">lbl</span> <span class="o">=</span> <span class="s2">&quot;Logistic Model&quot;</span>
+            
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lbl</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;coef&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            
+<span class="n">y_label_t</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Asthma: Inhaler/Bronchodilator&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Child Diarrhea: ORS&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Chest Pain: Referencial/Aspirin/ECG&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Tuberculosis: AFB Smear&quot;</span>
+    <span class="c1"># , &quot;Referred (non-diarrhea)&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Any Medication&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Antibiotics&quot;</span>
+    <span class="p">,</span> <span class="s2">&quot;Steroids&quot;</span>
+<span class="p">]</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>      
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\leftarrow$ Favors Public                       Favors Privte $\rightarrow$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">7.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">y_label_t</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">ncol</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="mf">.24</span><span class="p">,</span> <span class="o">-</span><span class="mf">.2</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;#cccccc&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/22028955a283fddf06c7c46828254d70c4d5dd3e9fc9714d1e50a7401f6af25e.png" src="../_images/22028955a283fddf06c7c46828254d70c4d5dd3e9fc9714d1e50a7401f6af25e.png" />
+</div>
+</div>
+</section>
+<section id="multiple-outcomes">
+<h2><span class="section-number">4.5. </span>Multiple Outcomes<a class="headerlink" href="#multiple-outcomes" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/reg-coef/data/GhanaJDE.csv&quot;</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="s2">&quot;expend_health_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_education_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_total_3months&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;realfinalprofit&#39;</span><span class="p">,</span> <span class="s1">&#39;cashtreat&#39;</span><span class="p">,</span> <span class="s1">&#39;equiptreat&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">,</span> <span class="s1">&#39;sheno&#39;</span><span class="p">]</span>
+
+<span class="n">data5</span> <span class="o">=</span> <span class="n">data5</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">data5_inx</span> <span class="o">=</span> <span class="n">data5</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sheno&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">])</span>
+<span class="n">data5_inx</span>
+
+
+<span class="n">data5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/reg-coef/data/GhanaJDE.csv&quot;</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span>
+     <span class="s2">&quot;expend_health_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_education_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_total_3months&quot;</span><span class="p">,</span>
+    <span class="s1">&#39;realfinalprofit&#39;</span><span class="p">,</span> <span class="s1">&#39;cashtreat&#39;</span><span class="p">,</span> <span class="s1">&#39;equiptreat&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">,</span> <span class="s1">&#39;sheno&#39;</span><span class="p">]</span>
+
+<span class="n">data5</span> <span class="o">=</span> <span class="n">data5</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">data5_inx</span> <span class="o">=</span> <span class="n">data5</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sheno&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">])</span>
+<span class="n">data5_inx</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>expend_health_3months</th>
+      <th>expend_education_3months</th>
+      <th>expend_total_3months</th>
+      <th>realfinalprofit</th>
+      <th>cashtreat</th>
+      <th>equiptreat</th>
+      <th>after</th>
+    </tr>
+    <tr>
+      <th>sheno</th>
+      <th>wave</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="5" valign="top">110101604</th>
+      <th>5</th>
+      <td>5.0</td>
+      <td>0.0</td>
+      <td>45.0</td>
+      <td>351.575378</td>
+      <td>0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>32.0</td>
+      <td>205.722168</td>
+      <td>0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>23.0</td>
+      <td>0.0</td>
+      <td>73.0</td>
+      <td>402.129395</td>
+      <td>0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>25.0</td>
+      <td>322.331146</td>
+      <td>0</td>
+      <td>0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>30.0</td>
+      <td>228.246490</td>
+      <td>0</td>
+      <td>0</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="p">[</span> 
+    <span class="s2">&quot;expend_education_3months&quot;</span><span class="p">,</span> 
+     <span class="s2">&quot;expend_health_3months&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;expend_total_3months&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;realfinalprofit&quot;</span>
+<span class="p">]</span>
+
+<span class="n">y_label</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_pos</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_lbl</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">y_ticks_lbl</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">y_n</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
+    <span class="k">while</span> <span class="n">y_n</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+        <span class="n">y_pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">y_n</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="n">y_n</span> <span class="o">=</span> <span class="n">y_n</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="c1">#----</span>
+    <span class="n">flma</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot; ~ (cashtreat + equiptreat) * after - 1&quot;</span>
+    <span class="n">y_data</span><span class="p">,</span> <span class="n">x_data</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">flma</span><span class="p">,</span> <span class="n">data5_inx</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+    <span class="n">x_data1</span> <span class="o">=</span> <span class="n">x_data</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="s1">&#39;cashtreat:after[T.True]&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;equiptreat:after[T.True]&#39;</span><span class="p">])</span>
+    <span class="c1">#----</span>
+    <span class="n">mdl</span> <span class="o">=</span> <span class="n">fe</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">exog</span> <span class="o">=</span> <span class="n">x_data1</span><span class="p">,</span> <span class="n">time_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">entity_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;clustered&#39;</span>
+            <span class="p">,</span> <span class="n">cluster_entity</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+    <span class="c1">#---</span>
+    
+    <span class="n">y_ll</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="s1">&#39;kind&#39;</span><span class="p">,</span> <span class="s1">&#39;kind&#39;</span><span class="p">]</span>
+    <span class="n">y_lbl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_ll</span><span class="p">)</span>
+    
+    <span class="n">y_ticks_lbl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    
+    <span class="n">point_cash</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">point_kind</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    
+    <span class="n">cash_ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">kind_ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mdl</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    
+    <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">point_cash</span><span class="p">,</span> <span class="n">point_cash</span><span class="p">,</span> <span class="n">point_kind</span><span class="p">,</span> <span class="n">point_kind</span><span class="p">])</span>
+    <span class="n">ci</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">cash_ci</span><span class="p">,</span> <span class="n">kind_ci</span><span class="p">])</span>
+    
+    
+
+<span class="n">y_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_pos</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">ci</span><span class="p">))</span>
+<span class="n">y_lbl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_lbl</span><span class="p">)</span>
+<span class="n">lbls_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">y_ticks_lbl</span><span class="p">)</span>
+
+<span class="n">df5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+       <span class="s2">&quot;y_pos&quot;</span><span class="p">:</span> <span class="n">y_pos</span><span class="p">,</span> 
+       <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span> 
+       <span class="s2">&quot;ci&quot;</span><span class="p">:</span> <span class="n">ci</span><span class="p">,</span> 
+       <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">y_lbl</span><span class="p">,</span> 
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">lbls_y</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">d_iff</span><span class="p">,</span> <span class="n">alphha</span> <span class="o">=</span> <span class="mf">.13</span><span class="p">,</span> <span class="mf">.5</span>
+<span class="n">df5</span><span class="p">[</span><span class="s1">&#39;y_pos1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df5</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;cash&quot;</span><span class="p">,</span> <span class="n">df5</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">d_iff</span><span class="p">,</span> <span class="n">df5</span><span class="p">[</span><span class="s1">&#39;y_pos&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">d_iff</span><span class="p">)</span>
+<span class="bp">cls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#c96e1e&quot;</span><span class="p">,</span> <span class="s1">&#39;#169930&#39;</span><span class="p">]</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="s1">&#39;kind&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="s1">&#39;cash&#39;</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            
+        <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df5</span><span class="p">[(</span><span class="n">df5</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df5</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">)]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos1&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos1&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">alphha</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="s1">&#39;kind&#39;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="s1">&#39;cash&#39;</span><span class="p">:</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="s2">&quot;Cash&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="s2">&quot;In-kind&quot;</span>
+
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df5</span><span class="p">[(</span><span class="n">df5</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df5</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;realfinalprofit&quot;</span><span class="p">)]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos1&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;ci&quot;</span><span class="p">,</span> <span class="s2">&quot;y_pos1&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lbl</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">alphha</span><span class="p">)</span>        
+        
+<span class="n">y_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;3mo Edu. Exp. (cedi)&#39;</span><span class="p">,</span> <span class="s1">&#39;3mo Health Exp&#39;</span><span class="p">,</span> <span class="s1">&#39;3mo Total Exp.&#39;</span><span class="p">,</span> <span class="s1">&#39;3mo Real Profit (cedi)&#39;</span><span class="p">]</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">]</span>
+        
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Treatment&quot;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">.5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;black&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Point Estimates &amp; 95% CI&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">y_labels</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c13a8d0a2097d0eab6d552b5daa7e63274e9adbe25c9f29ba46c4553506bbf9e.png" src="../_images/c13a8d0a2097d0eab6d552b5daa7e63274e9adbe25c9f29ba46c4553506bbf9e.png" />
+</div>
+</div>
+</section>
+<section id="point-estimates-by-rounds">
+<h2><span class="section-number">4.6. </span>Point Estimates by Rounds<a class="headerlink" href="#point-estimates-by-rounds" title="Permalink to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data6</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;https://github.com/d2cml-ai/python_visual_library/raw/reg-coef/data/GhanaJDE.csv&quot;</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;realfinalprofit&#39;</span><span class="p">,</span> <span class="s1">&#39;cashtreat&#39;</span><span class="p">,</span> <span class="s1">&#39;equiptreat&#39;</span><span class="p">,</span> <span class="s1">&#39;after&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">,</span> <span class="s1">&#39;sheno&#39;</span><span class="p">]</span>
+
+<span class="n">data6</span> <span class="o">=</span> <span class="n">data6</span><span class="p">[</span><span class="n">features</span><span class="p">]</span>
+<span class="n">data6</span><span class="p">[</span><span class="s1">&#39;wave1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data6</span><span class="p">[</span><span class="s1">&#39;wave&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+<span class="n">data6_inx</span> <span class="o">=</span> <span class="n">data6</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sheno&#39;</span><span class="p">,</span> <span class="s1">&#39;wave&#39;</span><span class="p">])</span>
+<span class="n">data6_inx</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+
+<span class="n">flma</span> <span class="o">=</span> <span class="s2">&quot;realfinalprofit ~ (cashtreat + equiptreat) * wave1 -1&quot;</span>
+<span class="n">y_data</span><span class="p">,</span> <span class="n">x_data</span> <span class="o">=</span> <span class="n">patsy</span><span class="o">.</span><span class="n">dmatrices</span><span class="p">(</span><span class="n">flma</span><span class="p">,</span> <span class="n">data6_inx</span><span class="p">,</span> <span class="n">return_type</span><span class="o">=</span><span class="s1">&#39;dataframe&#39;</span><span class="p">)</span>
+
+<span class="n">x_data1</span> <span class="o">=</span> <span class="n">x_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">regex</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;cashtreat:|equiptreat:&quot;</span><span class="p">)</span>
+
+<span class="n">mdl</span> <span class="o">=</span> <span class="n">fe</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">exog</span> <span class="o">=</span> <span class="n">x_data1</span><span class="p">,</span> <span class="n">time_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">entity_effects</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span>\
+<span class="n">fit</span><span class="p">(</span><span class="n">cov_type</span><span class="o">=</span><span class="s1">&#39;clustered&#39;</span><span class="p">,</span> <span class="n">cluster_entity</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">x_p</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">params</span>
+<span class="n">x_ci</span> <span class="o">=</span> <span class="n">mdl</span><span class="o">.</span><span class="n">conf_int</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_p</span><span class="p">)):</span>
+    
+    <span class="n">c</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x_p</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x_p</span><span class="p">[</span><span class="n">i</span><span class="p">]])</span>
+    <span class="n">ci</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x_ci</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]))</span>
+    
+<span class="n">x_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="n">ci</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">ci</span><span class="p">)</span>
+<span class="n">lbl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;cash&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;equi&quot;</span><span class="p">,</span> <span class="mi">8</span><span class="p">)])</span>
+<span class="n">x_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">x_n</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">x_n</span><span class="p">,</span> <span class="mi">2</span><span class="p">)])</span>
+
+<span class="n">df6</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;point&quot;</span><span class="p">:</span> <span class="n">c</span><span class="p">,</span>
+        <span class="s2">&quot;ci&quot;</span> <span class="p">:</span> <span class="n">ci</span><span class="p">,</span> 
+        <span class="s2">&quot;treat&quot;</span> <span class="p">:</span> <span class="n">lbl</span><span class="p">,</span> 
+        <span class="s2">&quot;x&quot;</span> <span class="p">:</span>  <span class="n">x_pos</span> 
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="n">sep</span> <span class="o">=</span> <span class="mf">.15</span>
+<span class="n">df6</span><span class="p">[</span><span class="s1">&#39;x_pos&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">df6</span><span class="o">.</span><span class="n">treat</span> <span class="o">==</span> <span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="n">df6</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">sep</span><span class="p">,</span> <span class="n">df6</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">sep</span><span class="p">)</span>
+<span class="n">df6</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>point</th>
+      <th>ci</th>
+      <th>treat</th>
+      <th>x</th>
+      <th>x_pos</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.396657</td>
+      <td>-96.518288</td>
+      <td>cash</td>
+      <td>1</td>
+      <td>0.85</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.396657</td>
+      <td>97.311602</td>
+      <td>cash</td>
+      <td>1</td>
+      <td>0.85</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-25.720863</td>
+      <td>-150.319739</td>
+      <td>cash</td>
+      <td>2</td>
+      <td>1.85</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-25.720863</td>
+      <td>98.878013</td>
+      <td>cash</td>
+      <td>2</td>
+      <td>1.85</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-16.036545</td>
+      <td>-124.272709</td>
+      <td>cash</td>
+      <td>3</td>
+      <td>2.85</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="mf">.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="bp">cls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#169930&quot;</span><span class="p">,</span> <span class="s1">&#39;#c96e1e&#39;</span><span class="p">]</span>
+<span class="n">omit</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">]</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="s1">&#39;equi&#39;</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">x_n</span><span class="p">:</span>
+        <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df6</span><span class="p">[(</span><span class="n">df6</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df6</span><span class="o">.</span><span class="n">treat</span> <span class="o">==</span> <span class="n">i</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s1">&#39;cash&#39;</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;x_pos&quot;</span><span class="p">,</span> <span class="s1">&#39;ci&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s1">&#39;x_pos&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cash&#39;</span><span class="p">,</span> <span class="s1">&#39;equi&#39;</span><span class="p">]:</span>
+    <span class="n">ref_data</span> <span class="o">=</span> <span class="n">df6</span><span class="p">[(</span><span class="n">df6</span><span class="o">.</span><span class="n">x</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df6</span><span class="o">.</span><span class="n">treat</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s1">&#39;cash&#39;</span><span class="p">:</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="s2">&quot;Cash&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cl</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lbl</span> <span class="o">=</span> <span class="s2">&quot;Equipment&quot;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s2">&quot;x_pos&quot;</span><span class="p">,</span> <span class="s1">&#39;ci&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">lbl</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="s1">&#39;x_pos&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">ref_data</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">cl</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        
+<span class="n">x_ti_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Wave 3&#39;</span><span class="p">,</span> <span class="s1">&#39;Wave 4&#39;</span><span class="p">,</span> <span class="s1">&#39;Wave 5&#39;</span><span class="p">,</span> <span class="s2">&quot;Wave 6&quot;</span><span class="p">]</span> 
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Treatment Group&quot;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">.4</span><span class="p">),</span> <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linestyle</span> <span class="o">=</span> <span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="n">omit</span><span class="p">]</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">151</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">x_ti_labels</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">14</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Point Estimates &amp; 95% CI&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">15</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Point Estimates &amp; 95% CI&#39;)
+</pre></div>
+</div>
+<img alt="../_images/3746c506ca7b3f50499af9eccc6332b62cab00976121e4ef38e3365e6787f6b1.png" src="../_images/3746c506ca7b3f50499af9eccc6332b62cab00976121e4ef38e3365e6787f6b1.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "d2cml-ai/python_visual_library",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./python_notebooks"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  
+<div class="footer-article-items footer-article__inner">
+  
+    <div class="footer-article-item"><!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="03_scatter.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Scatter Plots</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="05_difference_in_differences.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Difference in differences</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div></div>
+  
+</div>
+
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-table">4.1. With Table</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-tables-of-two-datasets">4.2. With Tables of Two Datasets</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#with-graded-error-bars">4.3. With Graded error bars</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#marginal-effect">4.4. Marginal Effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multiple-outcomes">4.5. Multiple Outcomes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#point-estimates-by-rounds">4.6. Point Estimates by Rounds</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Alexander Quispe
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  <p>
+MIT Licence
+</p>
+
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=e353d410970836974a52"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=e353d410970836974a52"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
